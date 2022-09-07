@@ -3,7 +3,7 @@ module.exports.startEmailCampaign = async function ( email) {
   try {
 
     const sgMail = require("@sendgrid/mail");
-    const sendGrid_API_Key = "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";
+    const sendGrid_API_Key = "";
     sgMail.setApiKey(sendGrid_API_Key);
 
     const msgHTML = `<tbody>
@@ -64,7 +64,7 @@ module.exports.startEmailCampaign = async function ( email) {
 
                 sgMail
                   .send(msg)
-                  .then((response) => console.log("Email Sent Successfully."))
+                  .then((response) => console.log("Email Sent Successfully." , response))
                   .catch((error) => console.log("Error " + error));
               } catch (error) {
                 throw error;

@@ -2,7 +2,7 @@ const getDb = require('../utils/database').getDb
 const db = require('../utils/database')
 const path = require('path')
 const emailService = require("../services/email");
-const whatsappService = require("../services/whatsapp");
+
 const {spawn} = require('child_process');
 
 db.mongoConnect(async (db) => {
@@ -10,7 +10,8 @@ db.mongoConnect(async (db) => {
         try {
                 const db = getDb()
                 let data = await db.collection('user').find( { status : 1}).toArray()
-    
+
+                console.log(data , "data value is here");
                 if( data?.length ) {
 
                   for await( let x of data ) {
@@ -23,17 +24,12 @@ db.mongoConnect(async (db) => {
                         if( campaignCondition ) {
         
                             if( x.email && x.email !="" && x.email != undefined  && x.email!= null ) {
-        
-                                await emailService.startEmailCampaign();
+                                
+                                console.log(x.email , "email value is here");
+                                await emailService.startEmailCampaign(x.email);
                                 isNotified = true;
                             }
-            
-                            if( x.whatsappContact && x.whatsappContact !="" && x.whatsappContact != undefined  && x.whatsappContact!= null ) {
-                               
-                                await whatsappService.startWhatsappCampagin();
-                                isNotified = true;
-        
-                            }
+
         
                             if(isNotified) {
         
