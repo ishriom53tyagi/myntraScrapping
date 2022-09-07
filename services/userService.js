@@ -1,6 +1,7 @@
 const { spawn } = require("child_process");
 const getDb = require("../utils/database").getDb;
 const path = require("path");
+const email = require("../services/email");
 
 module.exports.saveUserWish = async function (req, res) {
   let dataToSend;
@@ -44,8 +45,9 @@ module.exports.saveUserWish = async function (req, res) {
 
     let _ = await db.collection('user').insertOne(db_update)
 
-    await db
-    res.send(dataToSend)
+    await email.startEmailCampaign(req.body.email)
+    return res.send(dataToSend)
+
     });
 }
 

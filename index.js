@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(bodyParser.json({ limit: '50mb' }))
 app.set('view engine', 'ejs')
 app.use(express.static(__dirname +'/public'))
-app.use('/api/backend' , backendRoutes)
+app.use('/' , backendRoutes)
 
 
 db.mongoConnect((db) => {
