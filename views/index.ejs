@@ -1,102 +1,205 @@
+no
 <html>
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <link rel="stylesheet" type="text/css" href="/main.css">
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  </head>
 
-<body>
-  <div class="login-root">
-    <div class="box-root flex-flex flex-direction--column" style="min-height: 100vh;flex-grow: 1;">
-      <div class="loginbackground box-background--white padding-top--64">
-        <div class="loginbackground-gridContainer">
-          <div class="box-root flex-flex" style="grid-area: top / start / 8 / end;">
-            <div class="box-root" style="background-image: linear-gradient(white 0%, rgb(247, 250, 252) 33%); flex-grow: 1;">
+  <body>
+    <div class="login-root">
+      <div
+        class="box-root flex-flex flex-direction--column"
+        style="min-height: 100vh; flex-grow: 1"
+      >
+        <div class="loginbackground box-background--white padding-top--64">
+          <div class="loginbackground-gridContainer">
+            <div
+              class="box-root flex-flex"
+              style="grid-area: top / start / 8 / end"
+            >
+              <div
+                class="box-root"
+                style="
+                  background-image: linear-gradient(
+                    white 0%,
+                    rgb(247, 250, 252) 33%
+                  );
+                  flex-grow: 1;
+                "
+              ></div>
+            </div>
+            <div class="box-root flex-flex" style="grid-area: 4 / 2 / auto / 5">
+              <div
+                class="box-root box-divider--light-all-2 animationLeftRight tans3s"
+                style="flex-grow: 1"
+              ></div>
+            </div>
+            <div
+              class="box-root flex-flex"
+              style="grid-area: 6 / start / auto / 2"
+            >
+              <div
+                class="box-root box-background--blue800"
+                style="flex-grow: 1"
+              ></div>
+            </div>
+            <div
+              class="box-root flex-flex"
+              style="grid-area: 7 / start / auto / 4"
+            >
+              <div
+                class="box-root box-background--blue animationLeftRight"
+                style="flex-grow: 1"
+              ></div>
+            </div>
+            <div class="box-root flex-flex" style="grid-area: 8 / 4 / auto / 6">
+              <div
+                class="box-root box-background--gray100 animationLeftRight tans3s"
+                style="flex-grow: 1"
+              ></div>
+            </div>
+            <div
+              class="box-root flex-flex"
+              style="grid-area: 2 / 15 / auto / end"
+            >
+              <div
+                class="box-root box-background--cyan200 animationRightLeft tans4s"
+                style="flex-grow: 1"
+              ></div>
+            </div>
+            <div
+              class="box-root flex-flex"
+              style="grid-area: 3 / 14 / auto / end"
+            >
+              <div
+                class="box-root box-background--blue animationRightLeft"
+                style="flex-grow: 1"
+              ></div>
+            </div>
+            <div
+              class="box-root flex-flex"
+              style="grid-area: 4 / 17 / auto / 20"
+            >
+              <div
+                class="box-root box-background--gray100 animationRightLeft tans4s"
+                style="flex-grow: 1"
+              ></div>
+            </div>
+            <div
+              class="box-root flex-flex"
+              style="grid-area: 5 / 14 / auto / 17"
+            >
+              <div
+                class="box-root box-divider--light-all-2 animationRightLeft tans3s"
+                style="flex-grow: 1"
+              ></div>
             </div>
           </div>
-          <div class="box-root flex-flex" style="grid-area: 4 / 2 / auto / 5;">
-            <div class="box-root box-divider--light-all-2 animationLeftRight tans3s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 6 / start / auto / 2;">
-            <div class="box-root box-background--blue800" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 7 / start / auto / 4;">
-            <div class="box-root box-background--blue animationLeftRight" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 8 / 4 / auto / 6;">
-            <div class="box-root box-background--gray100 animationLeftRight tans3s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 2 / 15 / auto / end;">
-            <div class="box-root box-background--cyan200 animationRightLeft tans4s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 3 / 14 / auto / end;">
-            <div class="box-root box-background--blue animationRightLeft" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 4 / 17 / auto / 20;">
-            <div class="box-root box-background--gray100 animationRightLeft tans4s" style="flex-grow: 1;"></div>
-          </div>
-          <div class="box-root flex-flex" style="grid-area: 5 / 14 / auto / 17;">
-            <div class="box-root box-divider--light-all-2 animationRightLeft tans3s" style="flex-grow: 1;"></div>
-          </div>
         </div>
-      </div>
-      <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
-        <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-          <h1><a>TyagiMynta</a></h1>
-        </div>
-        <div class="formbg-outer">
-          <div class="formbg">
-            <div class="formbg-inner padding-horizontal--48">
-              
-              <form id="form" action="/api/backend/submit" method="post">
-                <div class="field padding-bottom--24">
-                  <label for="url">URL</label>
-                  <input id="url" type="url"  name="url" pattern="" required>
-                </div>
+        <div
+          class="box-root padding-top--24 flex-flex flex-direction--column"
+          style="flex-grow: 1; z-index: 9"
+        >
+          <div
+            class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center"
+          >
+            <h1><a>myntaScrapping</a></h1>
+          </div>
+          <div class="formbg-outer">
+            <div class="formbg">
+              <div class="formbg-inner padding-horizontal--48">
+                <form id="form" action="/api/backend/submit" method="post">
+                  <div class="field padding-bottom--24">
+                    <label for="url">URL</label>
+                    <input id="url" type="url" name="url" pattern="" required />
+                  </div>
 
-                <div class="field padding-bottom--10 border--none">
+                  <div class="field padding-bottom--10 border--none">
                     <label for="price-range">Price Range</label>
-                    <input id="price-range" type="range" min="0", max="10000" name="userRange" pattern="" required>
+                    <input
+                      id="price-range"
+                      type="range"
+                      min="0"
+                      ,
+                      max="10000"
+                      name="userRange"
+                      pattern=""
+                      required
+                    />
                   </div>
-                  <div id="price-display" class="field padding-bottom--24 move--left color--theme visibility--hidden font-size--1point5rem" >RS 0</div>
-               
-                <div class="field field-checkbox padding-bottom--10 flex-flex align-center">
-                  <label for="email-checkbox">
-                    <input type="checkbox" id="email-checkbox" name="checkbox"> Get notification via email
-                  </label>
-                </div>
+                  <div
+                    id="price-display"
+                    class="field padding-bottom--24 move--left color--theme visibility--hidden font-size--1point5rem"
+                  >
+                    RS 0
+                  </div>
 
-                <div id="email-div" class="field padding-bottom--24 padding-left--15 display--none">
-                    <input id="email" type="email"  name="email" placeholder="Enter email">
-                </div>
+                  <div
+                    class="field field-checkbox padding-bottom--10 flex-flex align-center"
+                  >
+                    <label for="email-checkbox">
+                      <input
+                        type="checkbox"
+                        id="email-checkbox"
+                        name="checkbox"
+                      />
+                      Get notification via email
+                    </label>
+                  </div>
 
-                <div class="field field-checkbox padding-bottom--10 flex-flex align-center">
+                  <div
+                    id="email-div"
+                    class="field padding-bottom--24 padding-left--15 display--none"
+                  >
+                    <input
+                      id="email"
+                      type="email"
+                      name="email"
+                      placeholder="Enter Email"
+                    />
+                  </div>
+
+                  <!-- <div
+                    class="field field-checkbox padding-bottom--10 flex-flex align-center"
+                  >
                     <label for="whatsapp-checkbox">
-                      <input id="whatsapp-checkbox" type="checkbox" name="checkbox"> Get notification via whatsapp
-                    </label> 
-                </div>
-
-                <div id="whatsapp-div" class="field padding-bottom--24 padding-left--15 display--none">
-                    <input id="whatsapp" type="tel"  name="whatsappContact" placeholder="Enter whatsapp number">
-                </div>
-                                
-                <div class="field padding-bottom--15 padding-top--10">
-                  <input id="submit-button" type="submit" value="Submit">
-                </div>
-
-                <div id='submit-warning' class="field padding-bottom--24 text-color--red">
-                        
+                      <input
+                        id="whatsapp-checkbox"
+                        type="checkbox"
+                        name="checkbox"
+                      />
+                      Get notification via whatsapp
+                    </label>
                   </div>
 
-              </form>
+                  <div
+                    id="whatsapp-div"
+                    class="field padding-bottom--24 padding-left--15 display--none"
+                  >
+                    <input
+                      id="whatsapp"
+                      type="tel"
+                      name="whatsappContact"
+                      placeholder="Enter whatsapp number"
+                    />
+                  </div> -->
+
+                  <div class="field padding-bottom--15 padding-top--10">
+                    <input id="submit-button" type="submit" value="Submit" />
+                  </div>
+
+                  <div
+                    id="submit-warning"
+                    class="field padding-bottom--24 text-color--red"
+                  ></div>
+                </form>
+              </div>
             </div>
           </div>
-          
         </div>
       </div>
     </div>
-  </div>
-  <script src="/main.js"></script>
-</body>
-
+    <script src="/main.js"></script>
+  </body>
 </html>
