@@ -38,7 +38,7 @@ module.exports.saveUserWish = async function ( req , res ) {
         whatsappContact : req.body.whatsappContact ? req.body.whatsappContact :  "",
         discountedPrice : dataToSend?.price,
         totalPrice : dataToSend?.mrp,
-        userWantPriceRange: req.body.userRange,
+        userWantPriceRange: Number(req.body.userRange),
         status : 1
      }
 

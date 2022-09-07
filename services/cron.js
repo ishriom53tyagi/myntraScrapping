@@ -4,9 +4,6 @@ const path = require('path')
 const emailService = require("../services/email");
 const whatsappService = require("../services/whatsapp");
 const {spawn} = require('child_process');
-const { resolve } = require('path');
-
-
 
 db.mongoConnect(async (db) => {
 
@@ -15,7 +12,7 @@ db.mongoConnect(async (db) => {
                 let data = await db.collection('user').find( { status : 1}).toArray()
     
                 if( data?.length ) {
-                let i =0
+
                   for await( let x of data ) {
                       
                         let isNotified = false;
@@ -51,9 +48,6 @@ db.mongoConnect(async (db) => {
                       
                     }
                 }
-                //do what you need here
-
-            
 
         }
         catch ( error ) {
