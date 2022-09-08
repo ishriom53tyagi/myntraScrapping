@@ -11,7 +11,6 @@ db.mongoConnect(async (db) => {
                 const db = getDb()
                 let data = await db.collection('user').find( { status : 1}).toArray()
 
-                console.log(data , "data value is here");
                 if( data?.length ) {
 
                   for await( let x of data ) {
@@ -24,8 +23,7 @@ db.mongoConnect(async (db) => {
                         if( campaignCondition ) {
         
                             if( x.email && x.email !="" && x.email != undefined  && x.email!= null ) {
-                                
-                                console.log(x.email , "email value is here");
+
                                 await emailService.startEmailCampaign(x.email);
                                 isNotified = true;
                             }
