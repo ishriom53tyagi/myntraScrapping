@@ -4,7 +4,7 @@ const path = require("path");
 const email = require("../services/email");
 
 module.exports.saveUserWish = async function (req, res) {
-  let dataToSend;
+  let dataToSend ='{"test":"abcd"}';
   const db = getDb();
   // spawn new child process to call the python script
 
@@ -19,7 +19,7 @@ module.exports.saveUserWish = async function (req, res) {
     dataToSend = data.toString();
   });
   // in close event we are sure that stream from child process is closed
-  python.on("close", async (code) => {
+  python.on("exit", async (code) => {
     console.log(`child process close all stdio with code ${code}`);
     // send data to browser
     try {
