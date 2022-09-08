@@ -26,7 +26,7 @@ db.mongoConnect(async (db) => {
             x.email != null
           ) {
             console.log(x.email, "email value is here");
-            console.log("match cron");
+            console.log("match crone");
             await emailService.matchEmailCampaign(x.email);
             isNotified = true;
           }
