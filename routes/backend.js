@@ -1,10 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const userService = require('../services/userService')
+const userService = require("../services/userService");
 
-router.get("/" , userService.getuserWishPage)
-router.get("/userWish" , userService.getuserWishPage)
-router.post('/submit', userService.saveUserWish)
-
+router.get("/", userService.getuserWishPage);
+router.post("/submit", userService.saveUserWish);
 
 module.exports = router;

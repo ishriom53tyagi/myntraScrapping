@@ -31,33 +31,31 @@ module.exports.saveUserWish = async function (req, res) {
       console.log(error);
       dataToSend = { success: false };
     }
+    console.log(dataToSend);
+    //Structure
+    const db_update = {
+      URL: urlToPass ? urlToPass : "",
+      email: req.body.email ? req.body.email : "",
+      discountedPrice: dataToSend?.price,
+      totalPrice: dataToSend?.mrp,
+      userWantPriceRange: Number(req.body.userRange),
+      status: 1,
+    };
 
-    //Structure 
-     const db_update = {
-        URL : urlToPass ?   urlToPass : "",
-        email : req.body.email ? req.body.email : "",
-        whatsappContact : req.body.whatsappContact ? req.body.whatsappContact :  "",
-        discountedPrice : dataToSend?.price,
-        totalPrice : dataToSend?.mrp,
-        userWantPriceRange: Number(req.body.userRange),
-        status : 1
-     }
+    let _ = await db.collection("user").insertOne(db_update);
 
-    let _ = await db.collection('user').insertOne(db_update)
+    await email.startEmailCampaign(req.body.email);
+    return res.send(dataToSend);
+  });
 
-    await email.startEmailCampaign(req.body.email)
-    return res.send(dataToSend)
+  /// Submit page rendering
+  res.render("submit");
+};
 
-    });
-}
-
-
-module.exports.getuserWishPage = async function ( req , res ) {
-
-    try {
-        return res.render("index");
-    }
-    catch ( error ) {
-        throw error ;
-     }
-}
+module.exports.getuserWishPage = async function (req, res) {
+  try {
+    return res.render("index");
+  } catch (error) {
+    throw error;
+  }
+};
