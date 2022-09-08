@@ -1,6 +1,7 @@
 const email = require("../config.json");
 const sendGrid_API_Key = email.sendGrid.sendGrid_API_Key;
 const senderEmail = email.sendGrid.senderEmail;
+
 module.exports.startEmailCampaign = async function (email) {
   try {
     const startingHTML = `<tbody>
