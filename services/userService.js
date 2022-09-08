@@ -4,7 +4,7 @@ const path = require("path");
 const email = require("../services/email");
 
 module.exports.saveUserWish = async function (req, res) {
-  let dataToSend ='{"test":"abcd"}';
+
   const db = getDb();
   // spawn new child process to call the python script
 
@@ -13,31 +13,36 @@ module.exports.saveUserWish = async function (req, res) {
     path.join(__dirname, "../workingFile.py"),
     urlToPass,
   ]);
-  // collect data from script
-  python.stdout.on("data", async function (data) {
-    console.log("Pipe data from python script ...");
-    dataToSend = data.toString();
-  });
-  // in close event we are sure that stream from child process is closed
-  python.on("exit", async (code) => {
-    console.log(`child process close all stdio with code ${code}`);
-    // send data to browser
-    try {
-      if (dataToSend) {
-        dataToSend = dataToSend.replace(/'/g, '"');
-        dataToSend = JSON.parse(dataToSend);
-      }
-    } catch (error) {
-      console.log(error);
-      dataToSend = { success: false };
+
+
+    let data = "";
+    for await (const chunk of python.stdout) {
+        console.log('stdout chunk: '+chunk);
+        data += chunk;
     }
-    console.log(dataToSend);
-    //Structure
+    let error = "";
+    for await (const chunk of python.stderr) {
+        console.error('stderr chunk: '+chunk);
+        error += chunk;
+    }
+    const exitCode = await new Promise( (resolve, reject) => {
+        python.on('close', resolve);
+    });
+
+    if( exitCode) {
+        throw new Error( `subprocess error exit ${exitCode}, ${error}`);
+    }
+
+    if (data) {
+            data = data.replace(/'/g, '"');
+            data = JSON.parse(data);
+          }
+
     const db_update = {
       URL: urlToPass ? urlToPass : "",
       email: req.body.email ? req.body.email : "",
-      discountedPrice: dataToSend?.price,
-      totalPrice: dataToSend?.mrp,
+      discountedPrice: data?.price,
+      totalPrice: data?.mrp,
       userWantPriceRange: Number(req.body.userRange),
       status: 1,
     };
@@ -45,9 +50,6 @@ module.exports.saveUserWish = async function (req, res) {
     let _ = await db.collection("user").insertOne(db_update);
 
     await email.startEmailCampaign(req.body.email);
-    return res.send(dataToSend);
-  });
-
   /// Submit page rendering
   res.render("submit");
 };
