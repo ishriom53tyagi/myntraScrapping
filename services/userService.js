@@ -6,14 +6,10 @@ const email = require("../services/email");
 module.exports.saveUserWish = async function (req, res) {
 
   const db = getDb();
+
   // spawn new child process to call the python script
-
-  let urlToPass = req.body.url;
-  const python = spawn("python3", [
-    path.join(__dirname, "../workingFile.py"),
-    urlToPass,
-  ]);
-
+    let urlToPass = req.body.url;
+    const python = spawn("python3", [ path.join(__dirname, "../workingFile.py"), urlToPass ]);
 
     let data = "";
     for await (const chunk of python.stdout) {
@@ -25,31 +21,29 @@ module.exports.saveUserWish = async function (req, res) {
         console.error('stderr chunk: '+chunk);
         error += chunk;
     }
-    const exitCode = await new Promise( (resolve, reject) => {
-        python.on('close', resolve);
-    });
 
-    if( exitCode) {
-        throw new Error( `subprocess error exit ${exitCode}, ${error}`);
-    }
+    python.on('close', async(code) => {
 
-    if (data) {
-            data = data.replace(/'/g, '"');
-            data = JSON.parse(data);
-          }
+      if (data) {
+        data = data.replace(/'/g, '"');
+        data = JSON.parse(data);
+      }
 
-    const db_update = {
-      URL: urlToPass ? urlToPass : "",
-      email: req.body.email ? req.body.email : "",
-      discountedPrice: data?.price,
-      totalPrice: data?.mrp,
-      userWantPriceRange: Number(req.body.userRange),
-      status: 1,
-    };
+      const db_update = {
+        URL: urlToPass ? urlToPass : "",
+        email: req.body.email ? req.body.email : "",
+        discountedPrice: data?.price,
+        totalPrice: data?.mrp,
+        userWantPriceRange: Number(req.body.userRange),
+        status: 1,
+      };
 
-    let _ = await db.collection("user").insertOne(db_update);
+      console.log("data of DB", db_update);
+      let _ = await db.collection("user").insertOne(db_update);
+      await email.startEmailCampaign(req.body.email);
 
-    await email.startEmailCampaign(req.body.email);
+    })
+
   /// Submit page rendering
   res.render("submit");
 };
