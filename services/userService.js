@@ -1,52 +1,63 @@
-const { spawn } = require("child_process");
 const getDb = require("../utils/database").getDb;
-const path = require("path");
 const email = require("../services/email");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const axios = require('axios').default;
 
 module.exports.saveUserWish = async function (req, res) {
 
-  const db = getDb();
+    const db = getDb();
 
-  // spawn new child process to call the python script
     let urlToPass = req.body.url;
-    const python = spawn("python3", [ path.join(__dirname, "../workingFile.py"), urlToPass ]);
+    const response = await axios.get(urlToPass);
+    let price = 0
 
-    let data = "";
-    for await (const chunk of python.stdout) {
-        console.log('stdout chunk: '+chunk);
-        data += chunk;
-    }
-    let error = "";
-    for await (const chunk of python.stderr) {
-        console.error('stderr chunk: '+chunk);
-        error += chunk;
-    }
+    const dom = new JSDOM(response.data);
 
-    python.on('close', async(code) => {
+    let nodes = dom.window.document.querySelectorAll("script");
+    
+    nodes.forEach( element => {
 
-      if (data) {
-        data = data.replace(/'/g, '"');
-        data = JSON.parse(data);
+        if(element.innerHTML && element.innerHTML.includes('"@type" : "Product"') ) {
+
+            try {
+                
+                let newData = JSON.parse(element.innerHTML)
+                price = newData.offers.price
+
+            }
+            catch ( error ) {
+                console.log(error)
+                throw error
+            }
+
+        }
+
+      })
+
+      if(price > 0 ) {
+
+        const db_update = {
+          URL: urlToPass ? urlToPass : "",
+          email: req.body.email ? req.body.email : "",
+          discountedPrice: Number(price) ,
+          userWantPriceRange: Number(req.body.userRange),
+          status: 1,
+        };
+  
+        console.log("data of DB", db_update);
+
+        let _ = await db.collection("user").insertOne(db_update);
+
+        // await email.startEmailCampaign(req.body.email);
+
+  
       }
 
-      const db_update = {
-        URL: urlToPass ? urlToPass : "",
-        email: req.body.email ? req.body.email : "",
-        discountedPrice: data?.price,
-        totalPrice: data?.mrp,
-        userWantPriceRange: Number(req.body.userRange),
-        status: 1,
-      };
-
-      console.log("data of DB", db_update);
-      let _ = await db.collection("user").insertOne(db_update);
-      await email.startEmailCampaign(req.body.email);
-
-    })
-
-  /// Submit page rendering
   res.render("submit");
+
 };
+
 
 module.exports.getuserWishPage = async function (req, res) {
   try {
