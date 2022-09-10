@@ -1,9 +1,10 @@
 const getDb = require("../utils/database").getDb;
 const db = require("../utils/database");
-const path = require("path");
 const emailService = require("../services/email");
 
-const { spawn } = require("child_process");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+const axios = require("axios").default;
 
 db.mongoConnect(async (db) => {
   try {
@@ -12,7 +13,7 @@ db.mongoConnect(async (db) => {
 
     console.log(data, "data value is here");
     if (data?.length) {
-      for await (let x of data) {
+      for (let x of data) {
         let isNotified = false;
         let campaignCondition = await checkCampaginCondition(x);
 
@@ -51,52 +52,35 @@ db.mongoConnect(async (db) => {
 });
 
 async function checkCampaginCondition(userData) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      if (userData) {
-        let dataToSend;
-        const python = spawn("python3", [
-          path.join(__dirname, "../workingFile.py"),
-          userData.URL,
-        ]);
+      let price = 0;
+      const response = await axios.get(userData.URL);
+      const dom = new JSDOM(response.data);
 
-        // collect data from script
-        python.stdout.on("data", async function (data) {
-          dataToSend = data.toString();
-        });
-        // in close event we are sure that stream from child process is closed
-        python.on("close", async (code) => {
-          console.log(`child process close all stdio with code ${code}`);
-          // send data to browser
+      let nodes = dom.window.document.querySelectorAll("script");
+
+      nodes.forEach((element) => {
+        if (
+          element.innerHTML &&
+          element.innerHTML.includes('"@type" : "Product"')
+        ) {
           try {
-            if (dataToSend) {
-              dataToSend = dataToSend.replace(/'/g, '"');
-              dataToSend = JSON.parse(dataToSend);
-            }
-          } catch (error) {
-            console.log(error);
-            resolve(false);
-          }
-
-          if (dataToSend) {
-            console.log(
-              Number(dataToSend?.price),
-              Number(userData.userWantPriceRange)
-            );
-
-            if (
-              Number(dataToSend?.price) <= Number(userData.userWantPriceRange)
-            ) {
+            let newData = JSON.parse(element.innerHTML);
+            price = newData.offers.price;
+            if (price < userData.userWantPriceRange) {
               resolve(true);
             } else {
               resolve(false);
             }
+          } catch (error) {
+            console.log(error);
+            throw error;
           }
-        });
-      }
+        }
+      });
     } catch (error) {
       console.log(error);
-      resolve(false);
     }
   });
 }
